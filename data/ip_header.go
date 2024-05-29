@@ -23,17 +23,18 @@ import (
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 */
 type IPHeader struct {
-	Version  uint8
-	IHL      uint8
-	TOS      uint8
-	Length   uint16
-	ID       uint16
-	Flags    uint16
-	TTL      uint8
-	Protocol uint8
-	Checksum uint16
-	SrcIP    net.IP
-	DstIP    net.IP
+	Version        uint8
+	IHL            uint8
+	TOS            uint8
+	Length         uint16
+	ID             uint16
+	Flags          uint8
+	FragmentOffSet uint16
+	TTL            uint8
+	Protocol       uint8
+	Checksum       uint16
+	SrcIP          net.IP
+	DstIP          net.IP
 }
 
 type TCPHeader struct {
@@ -64,17 +65,18 @@ func (tcp *TCPHeader) Marshal() []byte {
 
 func ParseIPHeader(data []byte) IPHeader {
 	return IPHeader{
-		Version:  data[0] >> 4,
-		IHL:      data[0] & 0x0F,
-		TOS:      data[1],
-		Length:   binary.BigEndian.Uint16(data[2:4]),
-		ID:       binary.BigEndian.Uint16(data[4:6]),
-		Flags:    binary.BigEndian.Uint16(data[6:8]),
-		TTL:      data[8],
-		Protocol: data[9],
-		Checksum: binary.BigEndian.Uint16(data[10:12]),
-		SrcIP:    net.IPv4(data[12], data[13], data[14], data[15]),
-		DstIP:    net.IPv4(data[16], data[17], data[18], data[19]),
+		Version:        data[0] >> 4,
+		IHL:            data[0] & 0x0F,
+		TOS:            data[1],
+		Length:         binary.BigEndian.Uint16(data[2:4]),
+		ID:             binary.BigEndian.Uint16(data[4:6]),
+		Flags:          data[6] >> 5,
+		FragmentOffSet: binary.BigEndian.Uint16(data[6:8]) & 0x1FFF,
+		TTL:            data[8],
+		Protocol:       data[9],
+		Checksum:       binary.BigEndian.Uint16(data[10:12]),
+		SrcIP:          net.IPv4(data[12], data[13], data[14], data[15]),
+		DstIP:          net.IPv4(data[16], data[17], data[18], data[19]),
 	}
 }
 
