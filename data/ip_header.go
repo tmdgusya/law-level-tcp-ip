@@ -8,26 +8,19 @@ import (
 )
 
 /*
-+---------------------+-------------+----------------+
-| Field | Size (bits) | Class |
-+---------------------+-------------+----------------+
-| Version | 4 | STATIC |
-| Header Length | 4 | STATIC-KNOWN |
-| DSCP* | 6 | ALTERNATING |
-| ECT flag* | 1 | CHANGING |
-| CE flag* | 1 | CHANGING |
-| Packet Length | 16 | INFERRED |
-| Identification | 16 | CHANGING |
-| Reserved flag* | 1 | CHANGING |
-| Don’t Fragment flag*| 1 | CHANGING |
-| More Fragments flag | 1 | STATIC-KNOWN |
-| Fragment Offset | 13 | STATIC-KNOWN |
-| Time To Live | 8 | CHANGING |
-| Protocol | 8 | STATIC |
-| Header Checksum | 16 | INFERRED |
-| Source Address | 32 | STATIC-DEF |
-| Destination Address | 32 | STATIC-DEF |
-+---------------------+-------------+----------------+
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|Version|  IHL  |Type of Service|          Total Length         |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|         Identification        |Flags|      Fragment Offset    |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|  Time to Live |    Protocol   |         Header Checksum       |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                       Source Address                          |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                    Destination Address                        |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                    Options                    |    Padding    |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 */
 type IPHeader struct {
 	Version  uint8
